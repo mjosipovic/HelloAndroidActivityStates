@@ -14,5 +14,6 @@
     <string name="button_label">Click me!</string>
     <string name="my_switch_label">New Switch</string>
     <string name="title_activity_main_activity5">MainActivity5</string>
+    <string name="title_activity_main_linart">MainLinartActivity</string>
 
 </resources>

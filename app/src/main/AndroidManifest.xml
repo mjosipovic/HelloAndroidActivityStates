@@ -18,7 +18,6 @@
         <activity
             android:name="com.example.mladen.helloandroidactivitystates.MainActivity3"
             android:label="@string/title_activity_main_activity3" >
-
         </activity>
         <activity
             android:name="com.example.mladen.helloandroidactivitystates.MainActivity4"
@@ -27,6 +26,10 @@
         <activity
             android:name="com.example.mladen.helloandroidactivitystates.MainActivity5"
             android:label="@string/title_activity_main_activity5" >
+        </activity>
+        <activity
+            android:name="com.example.mladen.helloandroidactivitystates.MainLinartActivity"
+            android:label="@string/title_activity_main_linart" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
