@@ -2,6 +2,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.mladen.helloandroidactivitystates.MainLinartActivity">
+    <!-- New, should appear as action button -->
+    <item android:id="@+id/action_new"
+        android:icon="@drawable/ic_action_new"
+        android:title="@string/action_new"
+        app:showAsAction="ifRoom" />
+
+    <!-- Remove, should appear as action button -->
+    <item android:id="@+id/action_remove"
+        android:icon="@drawable/ic_action_remove"
+        android:title="@string/action_remove"
+        app:showAsAction="ifRoom" />
+
+    <!-- Undo, should appear as action button -->
+    <item android:id="@+id/action_undo"
+        android:icon="@drawable/ic_action_undo"
+        android:title="@string/action_undo"
+        app:showAsAction="ifRoom" />
+
+    <!-- Redo, should appear as action button -->
+    <item android:id="@+id/action_redo"
+        android:icon="@drawable/ic_action_redo"
+        android:title="@string/action_redo"
+        app:showAsAction="ifRoom" />
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

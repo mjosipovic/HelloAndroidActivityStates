@@ -15,5 +15,9 @@
     <string name="my_switch_label">New Switch</string>
     <string name="title_activity_main_activity5">MainActivity5</string>
     <string name="title_activity_main_linart">MainLinartActivity</string>
+    <string name="action_new">New art</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_undo">Undo</string>
+    <string name="action_redo">Redo</string>
 
 </resources>

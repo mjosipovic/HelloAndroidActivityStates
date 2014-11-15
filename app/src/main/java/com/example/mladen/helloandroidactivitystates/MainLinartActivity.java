@@ -3,8 +3,8 @@ package com.example.mladen.helloandroidactivitystates;
 import android.app.ProgressDialog;
 import android.graphics.Point;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -39,12 +39,27 @@ public class MainLinartActivity extends ActionBarActivity implements MyLinartVie
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        switch (id) {
+            case R.id.action_new:
+//                Toast.makeText(getApplicationContext(), "action_new", Toast.LENGTH_SHORT).show();
+                mMyLinartView.newArt();
+                return true;
+            case R.id.action_remove:
+//                Toast.makeText(getApplicationContext(), "action_remove", Toast.LENGTH_SHORT).show();
+                mMyLinartView.removeArt();
+                return true;
+            case R.id.action_undo:
+//                Toast.makeText(getApplicationContext(), "action_undo", Toast.LENGTH_SHORT).show();
+                mMyLinartView.undoArt();
+                return true;
+            case R.id.action_redo:
+//                Toast.makeText(getApplicationContext(), "action_redo", Toast.LENGTH_SHORT).show();
+                mMyLinartView.redoArt();
+                return true;
 
-        return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.example.mladen.helloandroidactivitystates;
 
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,10 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
-import java.io.InputStream;
-import java.net.URL;
 
 
 public class MainActivity5 extends ActionBarActivity implements MyCustomView.MyCallbackClass {

@@ -1,9 +1,7 @@
 package com.example.mladen.helloandroidactivitystates;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -22,33 +20,27 @@ public class MyLinartView extends View {
     private static final String DEBUG_TAG = "MyLinartView";
 
     private Paint mPaint;
-    private Paint mPaint01;
-
-    private Paint mPaintForPath;
-
-
-    private Bitmap mBitmap;
-    private Canvas mCanvas;
-
-    final static private int WIDTH_PX = 1100;
-    final static private int HEIGHT_PX = 1100;
 
     final static private float STROKE_WIDTH_DP = 1;
-
-    final static private int DELTAY_DP = 5;
 
     final static private int DELTAY_MIN_DP = 15;
     final static private int DELTAY_MAX_DP = 25;
 
-    private int mDeltaYPx;
-
     private Path mPath;
+    private Path mOrigPath;
+    private Path mUndoPath;
+    private Path mRedoPath;
 
     private Random mRandom;
 
     private Point mT1, mT2;
 
     private int mMinMoveDistanceToProcess;
+
+    private int mWitdhOfCustomView;
+    private int mHeightOfCustomView;
+
+    final static private int[] STRIPE_WIDTH_ARR = {10, 15, 20, 25};
 
 
     //callback interface
@@ -63,6 +55,20 @@ public class MyLinartView extends View {
     }
     //
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        int width = getMeasuredWidth();
+        int height = getMeasuredHeight();
+        int widthWithoutPadding = width - getPaddingLeft() - getPaddingRight();
+        int heigthWithoutPadding = height - getPaddingTop() - getPaddingBottom();
+
+        mWitdhOfCustomView = widthWithoutPadding;
+        mHeightOfCustomView = heigthWithoutPadding;
+        Log.d(DEBUG_TAG, "(mWitdhOfCustomView,mHeightOfCustomView) =(" + mWitdhOfCustomView + "," + mHeightOfCustomView + ")");
+    }
+
     public MyLinartView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -73,18 +79,12 @@ public class MyLinartView extends View {
         mMinMoveDistanceToProcess = (int) (DELTAY_MIN_DP * density);
 
         float strokeWidthPx = STROKE_WIDTH_DP * density;
-        mDeltaYPx = (int) (DELTAY_DP * density);
-        Log.d(DEBUG_TAG, "mDeltaYPx=***" + mDeltaYPx + "***");
 
         //this Paint object is needed every time onDraw is called therefore I create it here and keep it
         mPaint = new Paint();
         mPaint.setColor(getResources().getColor(R.color.darkpurple));
         mPaint.setStrokeWidth(strokeWidthPx);
-
-        mPaint01 = new Paint();
-        mPaint01.setColor(getResources().getColor(android.R.color.black));
-        mPaint01.setTextSize(200);
-        mPaint01.setStyle(Paint.Style.FILL);
+        mPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
         this.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -113,15 +113,6 @@ public class MyLinartView extends View {
         });
 
 
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        mBitmap = Bitmap.createBitmap(WIDTH_PX, HEIGHT_PX, conf); // this creates a MUTABLE bitmap
-        mCanvas = new Canvas(mBitmap);
-
-        mPaintForPath = new Paint();
-        mPaintForPath.setColor(Color.BLACK);
-        mPaintForPath.setStrokeWidth(3);
-        mPaintForPath.setStyle(Paint.Style.FILL_AND_STROKE);
-
         mPath = new Path();
         mPath.moveTo(100, 100);
         mPath.lineTo(250, 50);
@@ -131,26 +122,18 @@ public class MyLinartView extends View {
         mPath.lineTo(50, 300);
         mPath.close();
 
+        mOrigPath = new Path(mPath);
+
         mRandom = new Random(System.currentTimeMillis());
-        //
-        myInitDrawing();
+        //calling invalidate causes the component to draw itself
+        invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //
-        canvas.drawBitmap(mBitmap, 0, 0, null);
-
-    }
-
-    private void myInitDrawing() {
-        Log.d(DEBUG_TAG, "myInitDrawing");
-//        mCanvas.drawLine(0, 0, WIDTH_PX, HEIGHT_PX, mPaint);
-        mCanvas.drawPath(mPath, mPaintForPath);
-
-        //calling invalidate causes the component to draw itself
-        invalidate();
+        canvas.drawPath(mPath, mPaint);
     }
 
     private Path createHorStripe(int left, int top, int width, int deltaY) {
@@ -175,6 +158,7 @@ public class MyLinartView extends View {
 
 
     public void drawLinOpArtBetweenPoints(Point t1, Point t2, MyUtils.MOVE_DIRECTION direction) {
+        mUndoPath = new Path(mPath);
         switch (direction) {
             case HORIZONTAL:
                 linVertOpArtRandBitmapAddToPath(t1.x, t2.x);
@@ -203,18 +187,14 @@ public class MyLinartView extends View {
             maxY = y1;
         }
 
-        int bitmapWidth = mBitmap.getWidth();
-        int bitmapHeight = mBitmap.getHeight();
-
-        Log.d(DEBUG_TAG, "mBitmap dimensions =(" + bitmapWidth + ", " + bitmapHeight + ")");
-
         int tmpStripeCol = 0;
         int tmpDeltaY;
         int lastYStripe = 0;
-        Log.d(DEBUG_TAG, "(minY,maxY) =(" + minY + "," + maxY + ")");
         for (int y = minY; y < maxY; y += tmpDeltaY) {
-            tmpDeltaY = MyUtils.randomNumberInRange(mRandom, DELTAY_MIN_DP, DELTAY_MAX_DP);
-            Path tempStripe = createHorStripe(0, y, bitmapWidth, tmpDeltaY);
+//            tmpDeltaY = MyUtils.randomNumberInRange(mRandom, DELTAY_MIN_DP, DELTAY_MAX_DP);
+            tmpDeltaY = MyUtils.randomValueFromArray(mRandom, STRIPE_WIDTH_ARR);
+//            Log.d(DEBUG_TAG, "tmpDeltaY=***" + tmpDeltaY + "***");
+            Path tempStripe = createHorStripe(0, y, mWitdhOfCustomView, tmpDeltaY);
 
             if (tmpStripeCol == 0) {//white
                 if (tempStripe.op(mPath, Path.Op.INTERSECT)) {
@@ -229,24 +209,12 @@ public class MyLinartView extends View {
             tmpStripeCol ^= 1;
         }
 
-        Log.d(DEBUG_TAG, "lastYStripe =" + lastYStripe);
-        Path selectedStripe = createHorStripe(0, minY, bitmapWidth, lastYStripe - minY);
+        Path selectedStripe = createHorStripe(0, minY, mWitdhOfCustomView, lastYStripe - minY);
         Path dontTouchedPath = new Path(mPath);
         dontTouchedPath.op(selectedStripe, Path.Op.DIFFERENCE);
 
-        //create bitmap that we will draw on
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        Bitmap tempBmp = Bitmap.createBitmap(WIDTH_PX, HEIGHT_PX, conf); // this creates a MUTABLE bitmap
-        Canvas tempCanvas = new Canvas(tempBmp);
-
         mPath.set(dontTouchedPath);
         mPath.op(newLineartPath, Path.Op.UNION);
-        tempCanvas.drawPath(mPath, mPaint);
-
-        if (null != mBitmap) {
-            mBitmap.recycle();
-        }
-        mBitmap = tempBmp;
     }
 
     public void linVertOpArtRandBitmapAddToPath(int x1, int x2) {
@@ -263,17 +231,14 @@ public class MyLinartView extends View {
             maxX = x1;
         }
 
-        int bitmapWidth = mBitmap.getWidth();
-        int bitmapHeight = mBitmap.getHeight();
-
-        Log.d(DEBUG_TAG, "mBitmap dimensions =(" + bitmapWidth + ", " + bitmapHeight + ")");
-
         int tmpStripeCol = 0;
         int tmpDeltaX;
         int x;
         for (x = minX; x < maxX; x += tmpDeltaX) {
-            tmpDeltaX = MyUtils.randomNumberInRange(mRandom, DELTAY_MIN_DP, DELTAY_MAX_DP);
-            Path tempStripe = createVertStripe(x, 0, bitmapHeight, tmpDeltaX);
+//            tmpDeltaX = MyUtils.randomNumberInRange(mRandom, DELTAY_MIN_DP, DELTAY_MAX_DP);
+            tmpDeltaX = MyUtils.randomValueFromArray(mRandom, STRIPE_WIDTH_ARR);
+//            Log.d(DEBUG_TAG, "tmpDeltaX=***" + tmpDeltaX + "***");
+            Path tempStripe = createVertStripe(x, 0, mHeightOfCustomView, tmpDeltaX);
 
             if (tmpStripeCol == 0) {//white
                 if (tempStripe.op(mPath, Path.Op.INTERSECT)) {
@@ -287,23 +252,37 @@ public class MyLinartView extends View {
             tmpStripeCol ^= 1;
         }
 
-        Path selectedStripe = createVertStripe(minX, 0, bitmapHeight, x - minX);
+        Path selectedStripe = createVertStripe(minX, 0, mHeightOfCustomView, x - minX);
         Path dontTouchedPath = new Path(mPath);
         dontTouchedPath.op(selectedStripe, Path.Op.DIFFERENCE);
 
-        //create bitmap that we will draw on
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        Bitmap tempBmp = Bitmap.createBitmap(WIDTH_PX, HEIGHT_PX, conf); // this creates a MUTABLE bitmap
-        Canvas tempCanvas = new Canvas(tempBmp);
-
         mPath.set(dontTouchedPath);
         mPath.op(newLineartPath, Path.Op.UNION);
-        tempCanvas.drawPath(mPath, mPaint);
-
-        if (null != mBitmap) {
-            mBitmap.recycle();
-        }
-        mBitmap = tempBmp;
     }
 
+    public void newArt(){
+        mPath = new Path();
+        invalidate();
+    }
+
+    public void removeArt(){
+        mPath = new Path(mOrigPath);
+        invalidate();
+    }
+
+    public void undoArt(){
+        if(mUndoPath != null) {
+            mRedoPath = new Path(mPath);
+            mPath = new Path(mUndoPath);
+            invalidate();
+        }
+    }
+
+    public void redoArt(){
+        if(mRedoPath != null) {
+            mUndoPath = new Path(mPath);
+            mPath = new Path(mRedoPath);
+            invalidate();
+        }
+    }
 }
