@@ -84,6 +84,13 @@ public class MainActivity5 extends ActionBarActivity implements MyCustomView.MyC
         mMyCustomView.linHorOpArtRandBitmapAddToPath();
     }
 
+    public void myButton9Action(View view){
+        Log.d(DEBUG_TAG, "myButton9Action...");
+        mMyCustomView.exploreBitmapPixels();
+    }
+
+//    exploreBitmapPixels()
+
     @Override
     public void callbackReturn(Point t1, Point t2, MyUtils.MOVE_DIRECTION direction) {
         //Starting the task

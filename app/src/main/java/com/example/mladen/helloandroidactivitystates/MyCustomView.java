@@ -767,4 +767,61 @@ public class MyCustomView extends View {
 //        invalidate();
     }
 
+    public void exploreBitmapPixels() {
+        Log.d(DEBUG_TAG, "exploreBitmapPixels");
+        long startTime = System.currentTimeMillis();
+
+        int bitmapWidth = mBitmap.getWidth();
+        int bitmapHeight = mBitmap.getHeight();
+
+        Log.d(DEBUG_TAG, "mBitmap dimensions =(" + bitmapWidth + ", " + bitmapHeight + ")");
+
+        int[] pix = new int[bitmapWidth * bitmapHeight];
+        mBitmap.getPixels(pix, 0, bitmapWidth, 0, 0, bitmapWidth, bitmapHeight);
+
+        int a, r, g, b, index;
+        int newA, newR, newG, newB;
+
+        for (int y = 0; y < bitmapHeight; y++) {
+            for (int x = 0; x < bitmapWidth; x++) {
+                index = y * bitmapWidth + x;
+                a = (pix[index] >> 24) & 0xff;
+                r = (pix[index] >> 16) & 0xff;
+                g = (pix[index] >> 8) & 0xff;
+                b = pix[index] & 0xff;
+
+
+                if (a != 0 || r != 0 || g != 0 || b != 0) {
+//                    Log.d(DEBUG_TAG, String.format("(a,r,g,b)=(%d,%d,%d,%d)", a, r, g, b));
+                    newR = 255;
+                } else {
+                    newR = r;
+                }
+
+                newA = a;
+                newG = g;
+                newB = b;
+
+//                pix[index] = 0xff000000 | (newR << 16) | (newG << 8) | newB;
+                pix[index] = (newA << 24) | (newR << 16) | (newG << 8) | newB;
+            }
+        }
+
+        Log.d(DEBUG_TAG, "finished with processing");
+
+        Bitmap bm = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        bm.setPixels(pix, 0, bitmapWidth, 0, 0, bitmapWidth, bitmapHeight);
+
+        if (null != mBitmap) {
+            mBitmap.recycle();
+        }
+        mBitmap = bm;
+
+        long endTime = System.currentTimeMillis();
+        Log.d(DEBUG_TAG, String.format("Duration is %d", endTime-startTime));
+
+        //calling invalidate causes the component to draw itself
+        invalidate();
+    }
+
 }

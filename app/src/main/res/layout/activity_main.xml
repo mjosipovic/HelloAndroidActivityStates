@@ -17,6 +17,14 @@
         android:layout_gravity="right"
         android:text="@string/testbuttonlabel" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/test_popup_button_label"
+        android:id="@+id/button9"
+        android:layout_gravity="right"
+        android:onClick="testPopupAction" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,6 +35,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello01_text"
-        android:id="@+id/textView01" />
+        android:id="@+id/textView01"
+        android:enabled="false"
+        android:visibility="invisible" />
 
 </LinearLayout>

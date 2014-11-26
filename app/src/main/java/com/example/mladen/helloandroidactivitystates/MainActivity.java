@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -134,5 +137,15 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void testPopupAction(View view){
+        Log.d(DEBUG_TAG, "MyActivity: testPopupAction");
+//        PopupMenu popup = new PopupMenu(this, view);
+        PopupMenu popup = new PopupMenu(this, mTextView01);
+
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu__basic_shapes_for_popup, popup.getMenu());
+        popup.show();
     }
 }

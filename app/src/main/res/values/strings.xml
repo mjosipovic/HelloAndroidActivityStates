@@ -19,5 +19,22 @@
     <string name="action_remove">Remove</string>
     <string name="action_undo">Undo</string>
     <string name="action_redo">Redo</string>
+    <string name="action_basic_shapes">Shapes</string>
+    <string name="basic_shapes">Shapes</string>
+    <string name="add_to_background">Add to background</string>
+    <string name="switch_mode">Switch linart/background mode</string>
+    <string name="menu_save">test menu</string>
+    <string name="menu_archive">test menu 01</string>
+    <string name="menu_delete">test menu 02</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
+    <string name="test_popup_button_label">Test popup</string>
+    <string name="rectangle">Rectangle</string>
+    <string name="oval">Oval</string>
+    <string name="title_activity_main_activity_with_drawing_view">MainActivityWithDrawingView</string>
+    <string name="title_activity_main_guard_gate">MainGuardGateActivity</string>
+
+    <string name="preference_file_key">com.example.mladen.helloandroidactivitystates.PREFERENCE_FILE_KEY</string>
+    <string name="gates_lanes_key">com.example.mladen.helloandroidactivitystates.GATES_LANES_KEY</string>
 
 </resources>

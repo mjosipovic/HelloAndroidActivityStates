@@ -64,6 +64,13 @@
             android:id="@+id/button8"
             android:onClick="myButton8Action"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9"
+            android:id="@+id/button9"
+            android:onClick="myButton9Action"/>
+
     </LinearLayout>
 
     <com.example.mladen.helloandroidactivitystates.MyCustomView

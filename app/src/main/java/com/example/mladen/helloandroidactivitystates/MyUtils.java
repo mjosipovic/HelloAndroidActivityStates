@@ -62,4 +62,8 @@ public class MyUtils {
             return MOVE_DIRECTION.VERTICAL;
         }
     }
+
+    public static double calcDistanceMaxAbsDifference(double x1, double y1, double x2, double y2){
+        return Math.max(Math.abs(x2-x1),Math.abs(y2-y1));
+    }
 }

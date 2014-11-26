@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.Random;
 
@@ -42,10 +41,24 @@ public class MyLinartView extends View {
 
     final static private int[] STRIPE_WIDTH_ARR = {10, 15, 20, 25};
 
+    public void setmLinartMode(boolean mLinartMode) {
+        this.mLinartMode = mLinartMode;
+    }
+
+    private boolean mLinartMode;
+    private long mStartTouchTime;
+    final static private long LONG_PRESS_MIN_DURATION = 500;
+    private double xMovePos, yMovePos;
+    final static private double MOVE_TOLERANCE_DP = 10;
+    private double moveTolerancePix;
+
+
 
     //callback interface
     public interface MyCallbackClass {
         void callbackReturn(Point t1, Point t2, MyUtils.MOVE_DIRECTION direction);
+
+        void callbackToShowPopup();
     }
 
     private MyCallbackClass myCallbackClass;
@@ -80,6 +93,8 @@ public class MyLinartView extends View {
 
         float strokeWidthPx = STROKE_WIDTH_DP * density;
 
+        moveTolerancePix = MOVE_TOLERANCE_DP * density;
+
         //this Paint object is needed every time onDraw is called therefore I create it here and keep it
         mPaint = new Paint();
         mPaint.setColor(getResources().getColor(R.color.darkpurple));
@@ -93,19 +108,50 @@ public class MyLinartView extends View {
 
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mT1 = new Point((int) event.getX(), (int) event.getY());
+                    if (!mLinartMode) {
+                        mStartTouchTime = System.currentTimeMillis();
+                        xMovePos = event.getX();
+                        yMovePos = event.getY();
+                    }
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     mT2 = new Point((int) event.getX(), (int) event.getY());
 
-                    //calculate move direction
-                    MyUtils.MOVE_DIRECTION tmpDirection = MyUtils.getMoveDirection(mT1, mT2, mMinMoveDistanceToProcess);
-                    Log.d(DEBUG_TAG, "tmpDirection: " + tmpDirection);
-                    if (tmpDirection != null) {
-                        myCallbackClass.callbackReturn(mT1, mT2, tmpDirection);
-                        return true;
+                    if (mLinartMode) {
+                        //calculate move direction
+                        MyUtils.MOVE_DIRECTION tmpDirection = MyUtils.getMoveDirection(mT1, mT2, mMinMoveDistanceToProcess);
+                        Log.d(DEBUG_TAG, "tmpDirection: " + tmpDirection);
+                        if (tmpDirection != null) {
+                            myCallbackClass.callbackReturn(mT1, mT2, tmpDirection);
+                            return true;
+                        } else {
+                            return false;
+                        }
                     } else {
-                        return false;
+                        long touchDuration = System.currentTimeMillis() - mStartTouchTime;
+                        Log.d(DEBUG_TAG, "touchDuration: " + touchDuration);
+                        if (touchDuration >= LONG_PRESS_MIN_DURATION) {
+                            myCallbackClass.callbackToShowPopup();
+                        }
                     }
 
+                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    if (!mLinartMode) {
+//                        Log.d(DEBUG_TAG, "ACTION_MOVE" + event.toString());
+
+                        if(MyUtils.calcDistanceMaxAbsDifference(xMovePos, yMovePos, event.getX(), event.getY()) > moveTolerancePix){
+                            mStartTouchTime = System.currentTimeMillis();
+                            xMovePos = event.getX();
+                            yMovePos = event.getY();
+                        }
+                        else {
+                            long touchDuration = System.currentTimeMillis() - mStartTouchTime;
+                            Log.d(DEBUG_TAG, "touchDuration: " + touchDuration);
+                            if (touchDuration >= LONG_PRESS_MIN_DURATION) {
+                                myCallbackClass.callbackToShowPopup();
+                            }
+                        }
+
+                    }
                 }
 
                 return true;
@@ -167,7 +213,7 @@ public class MyLinartView extends View {
                 linHorOpArtRandBitmapAddToPath(t1.y, t2.y);
                 break;
             case SLOPE:
-                Toast.makeText(getContext(), "Not yet implemented.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Not yet implemented.", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -260,26 +306,26 @@ public class MyLinartView extends View {
         mPath.op(newLineartPath, Path.Op.UNION);
     }
 
-    public void newArt(){
+    public void newArt() {
         mPath = new Path();
         invalidate();
     }
 
-    public void removeArt(){
+    public void removeArt() {
         mPath = new Path(mOrigPath);
         invalidate();
     }
 
-    public void undoArt(){
-        if(mUndoPath != null) {
+    public void undoArt() {
+        if (mUndoPath != null) {
             mRedoPath = new Path(mPath);
             mPath = new Path(mUndoPath);
             invalidate();
         }
     }
 
-    public void redoArt(){
-        if(mRedoPath != null) {
+    public void redoArt() {
+        if (mRedoPath != null) {
             mUndoPath = new Path(mPath);
             mPath = new Path(mRedoPath);
             invalidate();

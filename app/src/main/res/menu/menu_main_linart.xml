@@ -26,6 +26,12 @@
         android:title="@string/action_redo"
         app:showAsAction="ifRoom" />
 
+    <!-- Add to background -->
+    <item android:id="@+id/action_switch_mode"
+        android:icon="@drawable/ic_action_redo"
+        android:title="@string/switch_mode"
+        app:showAsAction="never" />
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

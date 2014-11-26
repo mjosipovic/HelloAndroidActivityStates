@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.mladen.helloandroidactivitystates.MainLinartActivity">
+    <item android:id="@+id/rectangle"
+        android:title="@string/rectangle"
+        android:orderInCategory="1"/>
+    <item android:id="@+id/oval"
+        android:title="@string/oval"
+        android:orderInCategory="2" />
+</menu>
