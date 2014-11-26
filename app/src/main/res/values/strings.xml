@@ -33,7 +33,6 @@
     <string name="oval">Oval</string>
     <string name="title_activity_main_activity_with_drawing_view">MainActivityWithDrawingView</string>
     <string name="title_activity_main_guard_gate">Gate Entry</string>
-
     <string name="preference_file_key">com.example.mladen.helloandroidactivitystates.PREFERENCE_FILE_KEY</string>
     <string name="gates_lanes_key">com.example.mladen.helloandroidactivitystates.GATES_LANES_KEY</string>
     <string name="gate_lane_selection_hint">Tap to select gate/lane</string>
@@ -43,5 +42,10 @@
     <string name="plate_hint">Plate</string>
     <string name="patron_info">Patron info</string>
     <string name="open_gate">Open gate</string>
+    <string name="action_add_new_patron">Add new patron</string>
+    <string name="title_activity_add_new_patron">Enroll patron</string>
+    <string name="visiting_info">Visiting info</string>
+    <string name="save_btn_label">Save</string>
+    <string name="cancel_btn_label">Cancel</string>
 
 </resources>

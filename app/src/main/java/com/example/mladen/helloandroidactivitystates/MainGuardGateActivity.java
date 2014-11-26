@@ -1,6 +1,7 @@
 package com.example.mladen.helloandroidactivitystates;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -23,7 +24,7 @@ public class MainGuardGateActivity extends ActionBarActivity {
     private static final String DEBUG_TAG = "MainGuardGateActivity";
     private static final String GATES_LANES_DELIMITER = ";";
     private static final String CURRENT_GATE_LANE = "currentGateLane";
-
+    private static final String EMPTY_STRING = "";
 
     private TextView mGateNumberTextView;
     private String mCurrentGateLane;
@@ -90,9 +91,12 @@ public class MainGuardGateActivity extends ActionBarActivity {
             // Restore value of members from saved state
             mCurrentGateLane = savedInstanceState.getString(CURRENT_GATE_LANE);
             mGateNumberTextView.setText(mCurrentGateLane);
+            mOpenGateSeekBar.setEnabled(true);
         } else {
             // Probably initialize members with default values for a new instance
-            mGateNumberTextView.setText("");
+            mCurrentGateLane= EMPTY_STRING;
+            mGateNumberTextView.setText(mCurrentGateLane);
+            mOpenGateSeekBar.setEnabled(false);
         }
 
     }
@@ -118,12 +122,16 @@ public class MainGuardGateActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_add_new_patron:
+                addNewPatron();
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -146,7 +154,7 @@ public class MainGuardGateActivity extends ActionBarActivity {
 //        popup.inflate(R.menu.gate_line_menu);
 
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        String gatesLanesStr = sharedPref.getString(getResources().getString(R.string.gates_lanes_key), "");
+        String gatesLanesStr = sharedPref.getString(getResources().getString(R.string.gates_lanes_key), EMPTY_STRING);
 
         final String[] gatesLanesArr = gatesLanesStr.split(GATES_LANES_DELIMITER);
 
@@ -166,6 +174,7 @@ public class MainGuardGateActivity extends ActionBarActivity {
 //                    Toast.makeText(getApplicationContext(), gatesLanesArr[itemId], Toast.LENGTH_LONG).show();
                     mCurrentGateLane = gatesLanesArr[itemId];
                     mGateNumberTextView.setText(mCurrentGateLane);
+                    mOpenGateSeekBar.setEnabled(true);
                     return true;
                 }
 
@@ -196,5 +205,11 @@ public class MainGuardGateActivity extends ActionBarActivity {
 
         editor.putString(getString(R.string.gates_lanes_key), strBuilder.toString());
         editor.commit();
+    }
+
+    private void addNewPatron(){
+        Log.d(DEBUG_TAG, "---> addNewPatron");
+        Intent intent = new Intent(this, AddNewPatronActivity.class);
+        startActivity(intent);
     }
 }

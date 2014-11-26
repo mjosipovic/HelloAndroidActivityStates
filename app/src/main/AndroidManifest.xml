@@ -54,6 +54,16 @@
             android:name="com.example.mladen.helloandroidactivitystates.MainGuardGateActivity"
             android:label="@string/title_activity_main_guard_gate" >
         </activity>
+        <activity
+            android:name="com.example.mladen.helloandroidactivitystates.AddNewPatronActivity"
+            android:label="@string/title_activity_add_new_patron"
+            android:parentActivityName="com.example.mladen.helloandroidactivitystates.MainGuardGateActivity">
+            <!-- Parent activity meta-data to support API level 7+ -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.mladen.helloandroidactivitystates.MainGuardGateActivity" />
+
+        </activity>
     </application>
 
 </manifest>

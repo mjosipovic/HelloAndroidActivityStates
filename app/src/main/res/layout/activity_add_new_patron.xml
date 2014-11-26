@@ -1,37 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.mladen.helloandroidactivitystates.MainGuardGateActivity"
+    tools:context="com.example.mladen.helloandroidactivitystates.AddNewPatronActivity"
     android:background="@color/iddylogo">
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/gateNumberTextView"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
-        android:textSize="@dimen/selected_gate_line_text_size"
-        android:background="@color/iddytextviewbrighterbackground"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:onClick="onGateLineTextViewClick"
-        android:clickable="true"
-        android:hint="@string/gate_lane_selection_hint" />
-
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/gateNumberTextView"
-        android:id="@+id/horLineDividerGateNumber"
-        android:layout_marginTop="16dp">
+        android:id="@+id/horLineDividerGateNumber">
 
         <ImageView
             android:layout_margin="10dp"
@@ -58,6 +38,8 @@
             />
 
     </LinearLayout>
+
+
 
 
     <LinearLayout
@@ -145,8 +127,6 @@
                 android:layout_gravity="center" />
 
         </LinearLayout>
-
-
     </LinearLayout>
 
 
@@ -156,7 +136,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/patronInfo"
-        android:id="@+id/horLineDividerGateOpen">
+        android:id="@+id/horLineDividerVisitingInfo">
 
         <ImageView
             android:layout_margin="10dp"
@@ -170,8 +150,8 @@
             android:layout_margin="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/open_gate"
-            android:id="@+id/openGateTextView"
+            android:text="@string/visiting_info"
+            android:id="@+id/visitingInfoTextView"
             android:textColor="@color/iddytextviewbackground" />
 
         <ImageView
@@ -184,18 +164,53 @@
 
     </LinearLayout>
 
-
-    <SeekBar
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/openGateSeekBar"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/iddytextviewbackground"
-        android:layout_below="@id/horLineDividerGateOpen"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="64dp"
-        android:layout_marginRight="64dp" />
+        android:id="@+id/visiting_spinner"
+        android:layout_below="@+id/horLineDividerVisitingInfo"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/notesEditText"
+        android:layout_below="@+id/visiting_spinner"
+        android:layout_alignStart="@+id/visiting_spinner"
+        android:layout_alignEnd="@+id/visiting_spinner"
+        android:hint="Notes"
+        android:layout_marginTop="16dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/notesEditText"
+        android:id="@+id/saveCancelLayout"
+        android:layout_marginTop="32dp"
+        android:weightSum="2">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/save_btn_label"
+            android:id="@+id/saveButton"
+            android:layout_weight="1"
+            android:onClick="saveBtnAction" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel_btn_label"
+            android:id="@+id/cancelButton"
+            android:layout_weight="1"
+            android:onClick="cancelBtnAction" />
+
+    </LinearLayout>
 
     <include
         layout="@layout/footerwithlogo"
@@ -203,8 +218,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:id="@+id/include" />
-
-
-
 
 </RelativeLayout>
