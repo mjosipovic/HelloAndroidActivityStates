@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -69,6 +71,11 @@ public class LoginActivity extends Activity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        ImageView animatedImage = (ImageView) findViewById(R.id.iddyLogoImageView);
+        animatedImage.setBackgroundResource(R.drawable.iddy_logo_frame_animation);
+        AnimationDrawable exampleAnimation = (AnimationDrawable) animatedImage.getBackground();
+        exampleAnimation.start();
     }
 
 

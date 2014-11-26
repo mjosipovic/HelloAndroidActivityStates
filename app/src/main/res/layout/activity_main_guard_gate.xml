@@ -1,6 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -13,27 +15,197 @@
         android:layout_height="wrap_content"
         android:id="@+id/gateNumberTextView"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         android:textSize="@dimen/selected_gate_line_text_size"
-        android:background="@android:color/darker_gray"
+        android:background="@color/iddytextviewbrighterbackground"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:onClick="onGateLineTextViewClick"
         android:clickable="true"
-        android:hint="Tap to select gate/lane" />
+        android:hint="@string/gate_lane_selection_hint" />
 
-    <ImageView
-        android:id="@+id/middleRightImg"
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/gateNumberTextView"
-        android:src="@drawable/shape_gray_line"/>
+        android:id="@+id/horLineDividerGateNumber"
+        android:layout_marginTop="16dp">
 
-    <include layout="@layout/footerwithlogo"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shape_gray_line"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/patron_info"
+            android:id="@+id/patronInfoTextView"
+            android:textColor="@color/iddytextviewbackground" />
+
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shape_gray_line"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/horLineDividerGateNumber"
+        android:id="@+id/patronInfo"
+        android:layout_marginTop="16dp"
+        android:weightSum="3">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/patronDetails"
+            android:layout_weight="2"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/patronNameTextView"
+                android:layout_below="@id/horLineDividerGateNumber"
+                android:textSize="@dimen/patron_info_text_size"
+                android:background="@color/iddytextviewbackground"
+                android:hint="@string/patron_name_hint"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/patronGroupTextView"
+                android:layout_below="@id/patronNameTextView"
+                android:textSize="@dimen/patron_info_text_size"
+                android:background="@color/iddytextviewbackground"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/patron_group_hint"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/patronIdTextView"
+                android:layout_below="@id/patronGroupTextView"
+                android:textSize="@dimen/patron_info_text_size"
+                android:background="@color/iddytextviewbackground"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/patron_id_hint"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/plateTextView"
+                android:layout_below="@id/patronIdTextView"
+                android:textSize="@dimen/patron_info_text_size"
+                android:background="@color/iddytextviewbackground"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/plate_hint"
+                android:layout_marginBottom="16dp" />
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/patronImage"
+            android:layout_weight="1"
+            >
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/patronImageView"
+                android:src="@drawable/ic_action_user"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/patronInfo"
+        android:id="@+id/horLineDividerGateOpen">
+
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shape_gray_line"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open_gate"
+            android:id="@+id/openGateTextView"
+            android:textColor="@color/iddytextviewbackground" />
+
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shape_gray_line"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/openGateSeekBar"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/iddytextviewbackground"
+        android:layout_below="@id/horLineDividerGateOpen"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp" />
+
+
+    <include
+        layout="@layout/footerwithlogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:id="@+id/include" />
+
 
 
 

@@ -9,4 +9,5 @@
 
     <!-- Text sizes -->
     <dimen name="selected_gate_line_text_size">24sp</dimen>
+    <dimen name="patron_info_text_size">20sp</dimen>
 </resources>

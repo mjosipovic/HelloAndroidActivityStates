@@ -6,6 +6,6 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView2"
-        android:src="@drawable/iddy_logo_img" />
+        android:id="@+id/iddyLogoImageView"
+        />
 </FrameLayout>

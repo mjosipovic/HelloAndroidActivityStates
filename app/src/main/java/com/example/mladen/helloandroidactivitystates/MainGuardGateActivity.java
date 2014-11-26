@@ -8,9 +8,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainGuardGateActivity extends ActionBarActivity {
@@ -21,6 +27,10 @@ public class MainGuardGateActivity extends ActionBarActivity {
 
     private TextView mGateNumberTextView;
     private String mCurrentGateLane;
+    private SeekBar mOpenGateSeekBar;
+
+    private Runnable mMoveToStartGateOpenSliderTask;
+    private ScheduledThreadPoolExecutor mScheduledThreadPoolExecutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +38,52 @@ public class MainGuardGateActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main_guard_gate);
         //
         mGateNumberTextView = (TextView)findViewById(R.id.gateNumberTextView);
+        mOpenGateSeekBar = (SeekBar) findViewById(R.id.openGateSeekBar);
+
+        mOpenGateSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressVal = 0;
+            int rampValue  = mOpenGateSeekBar.getMax()/2;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressVal = progress;
+//                Log.d(DEBUG_TAG, "Changing seekbar's progress, current value = " + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Log.d(DEBUG_TAG, "Started tracking seekbar");
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                String msg = "Stopped tracking seekbar." +"Covered: " + progressVal + "/" + seekBar.getMax();
+                Log.d(DEBUG_TAG, msg);
+
+                if(progressVal >= rampValue){
+                    mOpenGateSeekBar.setProgress(seekBar.getMax());
+                    Toast.makeText(getApplicationContext(), "Open gate", Toast.LENGTH_SHORT).show();
+                    mScheduledThreadPoolExecutor.schedule(mMoveToStartGateOpenSliderTask, 2, TimeUnit.SECONDS);
+                }
+                else{
+                    mOpenGateSeekBar.setProgress(0);
+                }
+
+            }
+        });
+
+        mMoveToStartGateOpenSliderTask = new Runnable(){
+            @Override
+            public void run() {
+                Log.d(DEBUG_TAG, "Move gate open slider to start");
+                mOpenGateSeekBar.setProgress(0);
+            }
+        };
+
+        mScheduledThreadPoolExecutor = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1);
+
+        ImageView iddyLogoImageView = (ImageView) findViewById(R.id.iddyLogoImageView);
+        iddyLogoImageView.setImageResource(R.drawable.iddy_logo_img);
 
         // Check whether we're recreating a previously destroyed instance
         if (savedInstanceState != null) {
